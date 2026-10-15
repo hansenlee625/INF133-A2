@@ -31,7 +31,7 @@ function countTweetTypes(tweets){
 	const counts = {
 		liveEvents: 0,
 		achievements: 0,
-		completedEvents: 0,
+		completedEvents: 0, userText: 0,
 		miscellaneous: 0,
 	};
 
@@ -39,7 +39,10 @@ function countTweetTypes(tweets){
 		const tweet = tweets[i];
 		if(tweet.source === 'live_event'){counts.liveEvents++;}
 		else if(tweet.source === 'achievement'){counts.achievements++;} 
-		else if(tweet.source === 'completed_event'){counts.completedEvents++;}
+		else if(tweet.source === 'completed_event'){
+			counts.completedEvents++;
+			if(tweet.written){userText++;}
+		}
 		else{counts.miscellaneous++;}
 	}
 
@@ -47,14 +50,16 @@ function countTweetTypes(tweets){
 }
 
 function updateCategoryCounts(counts, totalTweets){
-	setClassText('completedEvents', counts.completedEvents);
-	setClassText('completedEventsPct', getPercentage(counts.completedEvents, totalTweets));
-
 	setClassText('liveEvents', counts.liveEvents);
 	setClassText('liveEventsPct', getPercentage(counts.liveEvents, totalTweets));
 
 	setClassText('achievements', counts.achievements);
 	setClassText('achievementsPct', getPercentage(counts.achievements, totalTweets));
+
+	setClassText('completedEvents', counts.completedEvents);
+	setClassText('completedEventsPct', getPercentage(counts.completedEvents, totalTweets));
+	setClassText('written', counts.userText);
+	setClassText('writtenPct', getPercentage(counts.userText, totalTweets));
 
 	setClassText('miscellaneous', counts.miscellaneous);
 	setClassText('miscellaneousPct', getPercentage(counts.miscellaneous, totalTweets));
