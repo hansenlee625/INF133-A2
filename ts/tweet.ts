@@ -40,16 +40,29 @@ class Tweet {
 
     //returns a boolean, whether the text includes any content written by the person tweeting.
     get written():boolean {
-        //TODO: identify whether the tweet is written
-        return false;
+        return this.writtenText.length > 0;
+    }
+
+    //Tweet text cleaner helper
+    private get cleanedTweetText(): string{
+        return this.text
+          .replace(/#RunKeeper\b/gi, "") //Strip hashtag
+          .replace(/https:\/\/\S+/gi, "") //Remove links
+          .replace(/\s+/g, " ") //Replace extra spaces within text with single space
+          .trim();
     }
 
     get writtenText():string {
-        if(!this.written) {
-            return "";
-        }
-        //TODO: parse the written text from the tweet
-        return "";
+        let text = this.cleanedTweetText;
+        //Remove RunKeeper default text
+        text = text.replace(/Just completed a .*? with (?:@?RunKeeper)\.?\s*Check it out!?/gi,"");
+        text = text.replace(/I just completed a .*? with (?:@?RunKeeper)\.?\s*Check it out!?/gi, "");
+
+        //Remove puctuation and adjust remaining extra white spaces
+        return text
+          .replace(/^[\s\-–—:|.,!?]+|[\s\-–—:|.,!?]+$/g, "")
+          .replace(/\s+/g, " ")
+          .trim();
     }
 
     get activityType():string {
