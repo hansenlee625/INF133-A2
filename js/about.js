@@ -1,3 +1,4 @@
+// ----- Date Display Helpers ----- //
 function findDateRange(tweets){
 	let earliestTweet = tweets[0];
 	let latestTweet = tweets[0];
@@ -24,6 +25,54 @@ function updateDates(earliestTweet, latestTweet){
 	document.getElementById('lastDate').innerText = formatDate(latestTweet.time);
 }
 
+
+// ----- Tweet Counter Helpers ----- //
+function countTweetTypes(tweets){
+	const counts = {
+		liveEvents: 0,
+		achievements: 0,
+		completedEvents: 0,
+		miscellaneous: 0,
+	};
+
+	for(let i = 0; i < tweets.length; i++) {
+		const tweet = tweets[i];
+		if(tweet.source === 'live_event'){counts.liveEvents++;}
+		else if(tweet.source === 'achievement'){counts.achievements++;} 
+		else if(tweet.source === 'completed_event'){counts.completedEvents++;}
+		else{counts.miscellaneous++;}
+	}
+
+	return counts;
+}
+
+function updateCategoryCounts(counts, totalTweets){
+	setClassText('completedEvents', counts.completedEvents);
+	setClassText('completedEventsPct', getPercentage(counts.completedEvents, totalTweets));
+
+	setClassText('liveEvents', counts.liveEvents);
+	setClassText('liveEventsPct', getPercentage(counts.liveEvents, totalTweets));
+
+	setClassText('achievements', counts.achievements);
+	setClassText('achievementsPct', getPercentage(counts.achievements, totalTweets));
+
+	setClassText('miscellaneous', counts.miscellaneous);
+	setClassText('miscellaneousPct', getPercentage(counts.miscellaneous, totalTweets));
+}
+
+function getPercentage(count, total){
+	if(total === 0){ return '0.00%';}
+	return ((count / total) * 100).toFixed(2) + '%';
+}
+
+
+// ----- Class text setter helper ----- //
+function setClassText(className, value){
+	document.querySelectorAll('.' + className).forEach((e) => {e.innerText = value;});
+}
+
+
+// ----- parseTweets function ----- //
 function parseTweets(runkeeper_tweets) {
 	//Do not proceed if no tweets loaded
 	if(runkeeper_tweets === undefined) {
@@ -42,6 +91,9 @@ function parseTweets(runkeeper_tweets) {
 
 	const dateRange = findDateRange(tweet_array);
 	updateDates(dateRange.earliest, dateRange.latest);
+
+	const counts = countTweetTypes(tweet_array);
+	updateCategoryCounts(counts, tweet_array.length);
 }
 
 //Wait for the DOM to load
