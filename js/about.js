@@ -41,7 +41,7 @@ function countTweetTypes(tweets){
 		else if(tweet.source === 'achievement'){counts.achievements++;} 
 		else if(tweet.source === 'completed_event'){
 			counts.completedEvents++;
-			if(tweet.written){userText++;}
+			if(tweet.written){counts.userText++;}
 		}
 		else{counts.miscellaneous++;}
 	}
