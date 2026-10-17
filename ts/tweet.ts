@@ -55,8 +55,7 @@ class Tweet {
     get writtenText():string {
         let text = this.cleanedTweetText;
         //Remove RunKeeper default text
-        text = text.replace(/Just completed a .*? with (?:@?RunKeeper)\.?\s*Check it out!?/gi,"");
-        text = text.replace(/I just completed a .*? with (?:@?RunKeeper)\.?\s*Check it out!?/gi, "");
+        text = text.replace(/(?:I\s+)?just completed a .*? with (?:@?RunKeeper)\.?\s*Check it out!?/gi,"");
 
         //Remove puctuation and adjust remaining extra white spaces
         return text
@@ -70,7 +69,9 @@ class Tweet {
             return "unknown";
         }
         //TODO: parse the activity type from the text of the tweet
-        return "";
+        const match = this.text.match(/completed an?\s+(?:\d+(?:\.\d+)?\s+(?:mi|km)\s+)?(.+?)\s+with\s+@?RunKeeper/i);
+        if(match === null){return "unknown";}
+        return match[1].trim().toLowerCase();
     }
 
     get distance():number {
@@ -78,7 +79,12 @@ class Tweet {
             return 0;
         }
         //TODO: prase the distance from the text of the tweet
-        return 0;
+        const match = this.text.match(/completed an?\s+(\d+(?:\.\d+)?)\s+(mi|km)\b/i);
+        if(match === null){return 0;}
+        const dist = Number(match[1]);
+        const unit = match[2].toLowerCase();
+        if(unit === "km"){return dist / 1.609;}
+        return dist;
     }
 
     getHTMLTableRow(rowNumber:number):string {
