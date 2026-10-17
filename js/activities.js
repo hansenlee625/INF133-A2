@@ -28,20 +28,21 @@ function parseTweets(runkeeper_tweets) {
 	    "mark": "bar",
 	    "encoding":{
 			"x":{
-			"field": "activity",
-	        "type": "nominal",
-	        "sort": "-y",
-	        "title": "Activity Type"
-	    },
-	    "y":{
-	        "aggregate": "count",
-	        "type": "quantitative",
-	        "title": "Number of Tweets"
-	    }
-	  }
+				"field": "activity",
+				"type": "nominal",
+				"sort": "-y",
+				"title": "Activity Type"
+			},
+			"y":{
+				"aggregate": "count",
+				"type": "quantitative",
+				"title": "Number of Tweets"
+			}
+		}
 	};
 	vegaEmbed('#activityVis', activity_vis_spec, {actions:false});
 
+	//Update # types of activities and 3 most logged activities
 	document.getElementById('numberActivities').innerText = 16;
 	document.getElementById('firstMost').innerText = "run";
 	document.getElementById('secondMost').innerText = "walk";
