@@ -131,6 +131,24 @@ function parseTweets(runkeeper_tweets) {
 	vegaEmbed('#distanceVis', distance_vis_spec);
 	vegaEmbed('#distanceVisAggregated',distance_vis_aggregated_spec);
 
+	document.getElementById('distanceVisAggregated').style.display = "none";
+	let showingMeans = false;
+	
+	//Graph switch button
+	document.getElementById('aggregate').addEventListener('click', function(){
+		showingMeans = !showingMeans;
+		if(showingMeans){
+			document.getElementById('distanceVis').style.display = "none";
+			document.getElementById('distanceVisAggregated').style.display = "block";
+			document.getElementById('aggregate').innerText = "Show all activities";
+		}
+		else{
+			document.getElementById('distanceVis').style.display = "block";
+			document.getElementById('distanceVisAggregated').style.display = "none";
+			document.getElementById('aggregate').innerText = "Show means";
+		}
+	});
+
 	//Update activity HTML
 	document.getElementById('longestActivityType').innerText = 'bike';
 	document.getElementById('shortestActivityType').innerText = 'walk';
