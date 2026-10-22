@@ -35,7 +35,7 @@ function addEventHandlerForSearch() {
 		let rows = '';
 		for(let i = 0; i < writtenTweets.length; i++){
 			tweet = writtenTweets[i];
-			if(tweet.writtenText.toLowerCase().includes(query.toLowerCase())){
+			if(tweet.source === "completed_event" && tweet.writtenText.toLowerCase().includes(query.toLowerCase())){
 				count++;
 				rows += tweet.getHTMLTableRow(count);
 			}
