@@ -69,7 +69,7 @@ class Tweet {
             return "unknown";
         }
         //TODO: parse the activity type from the text of the tweet
-        const match = this.text.match(/completed an?\s+(?:\d+(?:\.\d+)?\s+(?:mi|km)\s+)?(.+?)\s+with\s+@?RunKeeper/i);
+        const match = this.text.match(/(?:just completed|just posted)\s+an?\s+\d+(?:\.\d+)?\s+(?:mi|km)\s+([a-z]+)(?:\s+workout)?(?=\s*(?:[-–—]|with\b|$))/i);
         if(match === null){return "unknown";}
         return match[1].trim().toLowerCase();
     }
@@ -89,6 +89,17 @@ class Tweet {
 
     getHTMLTableRow(rowNumber:number):string {
         //TODO: return a table row which summarizes the tweet with a clickable link to the RunKeeper activity
-        return "<tr></tr>";
+        const clickableTweetLink = this.text.replace(
+          /(https:\/\/\S+)/gi,
+          '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
+        );
+        
+        return `
+            <tr>
+              <th scope="row">${rowNumber}</th>
+              <td>${this.activityType}</td>
+              <td>${clickableTweetLink}</td>
+            </tr>
+        `;
     }
 }
