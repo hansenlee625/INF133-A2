@@ -69,7 +69,7 @@ class Tweet {
             return "unknown";
         }
         //TODO: parse the activity type from the text of the tweet
-        const match = this.text.match(/(?:just completed|just posted)\s+an?\s+\d+(?:\.\d+)?\s+(?:mi|km)\s+([a-z]+)(?:\s+workout)?(?=\s*(?:[-–—]|with\b|$))/i);
+        const match = this.text.match(/(?:just completed|just posted) an? \d+(?:\.\d+)? (?:mi|km) ([a-z]+)(?:\s+workout)?/i);
         if(match === null){return "unknown";}
         return match[1].trim().toLowerCase();
     }
