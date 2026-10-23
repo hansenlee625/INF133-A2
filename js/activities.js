@@ -45,7 +45,7 @@ function parseTweets(runkeeper_tweets) {
 	vegaEmbed('#activityVis', activity_vis_spec);
 
 	//Update # types of activities and 3 most logged activities
-	document.getElementById('numberActivities').innerText = 16;
+	document.getElementById('numberActivities').innerText = 29;
 	document.getElementById('firstMost').innerText = "run";
 	document.getElementById('secondMost').innerText = "walk";
 	document.getElementById('thirdMost').innerText = "bike";

@@ -44,20 +44,22 @@ class Tweet {
     }
 
     //Tweet text cleaner helper
-    private get cleanedTweetText(): string{
+    get cleanedTweetText(): string{
         return this.text
-          .replace(/#RunKeeper\b/gi, "") //Strip hashtag
-          .replace(/https:\/\/\S+/gi, "") //Remove links
+          .replace(/\s+with @?RunKeeper\.?/gi, "") //Remove @
+          .replace(/\s*check it out[.!]*/gi, "") //Remove default check text
           .replace(/\s+/g, " ") //Replace extra spaces within text with single space
           .trim();
     }
 
     get writtenText():string {
-        let text = this.cleanedTweetText;
-        //Remove RunKeeper default text
-        text = text.replace(/(?:I\s+)?just completed a .*? with (?:@?RunKeeper)\.?\s*Check it out!?/gi,"");
+        let text = this.cleanedTweetText
+          .replace(/#RunKeeper/gi, "") //Remove default hashtag
+          .replace(/https?:\/\/\S+/gi, "") //Remove link
+          //Remove the remaining generated RunKeeper activity description
+          .replace(/just (?:completed|posted) an? (?:\d+(?:\.\d+)? (?:mi|km) )?[a-z]+(?: workout)?(?: in \d+(?::\d{2}){1,2})?/gi, "");
 
-        //Remove puctuation and adjust remaining extra white spaces
+        //Remove punctuation and adjust remaining extra white spaces
         return text
           .replace(/^[\s\-–—:|.,!?]+|[\s\-–—:|.,!?]+$/g, "")
           .replace(/\s+/g, " ")
@@ -69,7 +71,7 @@ class Tweet {
             return "unknown";
         }
         //TODO: parse the activity type from the text of the tweet
-        const match = this.text.match(/(?:just completed|just posted) an? \d+(?:\.\d+)? (?:mi|km) ([a-z]+)(?:\s+workout)?/i);
+        const match = this.text.match(/just (?:completed|posted) an? (?:\d+(?:\.\d+)? (?:mi|km) )?([a-z]+)(?: workout)?(?: in \d+(?::\d{2}){1,2})?/i);
         if(match === null){return "unknown";}
         return match[1].trim().toLowerCase();
     }
